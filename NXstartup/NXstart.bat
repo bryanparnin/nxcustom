@@ -38,7 +38,10 @@ set NXCUSTOM_INSTALLED_TC_VERSION=
 setlocal EnableDelayedExpansion
 for /f "usebackq tokens=* delims=" %%a in (`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Siemens" 2^> nul`) do (
 	set __a=%%~na
-	if "!__a:~0,3!" == "NX " (
+	set __nx=
+	if "!__a:~0,3!" == "NX " (set __nx=1)
+	if "!__a:~0,13!" == "Designcenter " (set __nx=1)
+	if defined __nx (
 		if not defined NXCUSTOM_INSTALLED_NX_VERSIONS (
 			set NXCUSTOM_INSTALLED_NX_VERSIONS=!__a:~-4!
 		) else (
@@ -210,6 +213,16 @@ if defined NX_LAUNCHER_INIT (
 		)
 		if not defined UGII_BASE_DIR (
 			for /f "usebackq tokens=1,2,*" %%a in (`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Siemens\NX %NXCUSTOM_APPLICATION_VERSION%" 2^> nul`) do (
+				if "%%a" == "INSTALLDIR" (set UGII_BASE_DIR=%%c)
+			)
+		)
+		if not defined UGII_BASE_DIR (
+			for /f "usebackq tokens=1,2,*" %%a in (`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Siemens\Designcenter %NXCUSTOM_APPLICATION_VERSION%" 2^> nul`) do (
+				if "%%a" == "UGII_BASE_DIR" (set UGII_BASE_DIR=%%c)
+			)
+		)
+		if not defined UGII_BASE_DIR (
+			for /f "usebackq tokens=1,2,*" %%a in (`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Siemens\Designcenter %NXCUSTOM_APPLICATION_VERSION%" 2^> nul`) do (
 				if "%%a" == "INSTALLDIR" (set UGII_BASE_DIR=%%c)
 			)
 		)

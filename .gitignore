@@ -1,0 +1,12 @@
+# Ignore .pdf files and VSCode settings
+*.pdf
+.vscode/settings.json
+
+# Ignore customer defaults
+*/CustomerDefaults/Users/
+
+# NX Startup Configuration - set by launcher
+/NXstartup/NXstart.conf
+
+# Test Libraries
+/NX[0-9][0-9][0-9][0-9][Ll][Ii][Bb][Rr][Aa][Rr][Yy]_*[Tt][Ee][Ss][Tt]*/
